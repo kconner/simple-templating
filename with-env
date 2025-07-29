@@ -1,0 +1,31 @@
+#!/bin/bash -euo pipefail
+
+usage() {
+    cat <<'EOF'
+with-env - Run a command with variables sourced from an .env file
+
+Usage: with-env data.env command [args...]
+
+Configured scripts:
+  with-env production.env ./deploy.sh
+
+Templating:
+  m4 main.m4 | with-env variables.env envsubst
+    Here m4 resolves includes, then envsubst fills shell variable expressions.
+EOF
+}
+
+if [[ $# -lt 2 ]] || [[ "${1:-}" == "-h" ]] || [[ "${1:-}" == "--help" ]]; then
+    usage
+    exit 1
+fi
+
+env_file="$1"
+shift
+
+# Export all variables
+set -a
+source "$env_file"
+set +a
+
+exec "$@"
