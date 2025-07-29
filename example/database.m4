@@ -1,0 +1,3 @@
+... Database Settings ...
+Host: $DB_HOST
+Port: $DB_PORT
