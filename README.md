@@ -50,7 +50,7 @@ VARIABLE2="value2"
 Then you can pass that file as `env -iS "$(cat vars.env)" …` to run the command that follows, `envsubst`, with the values available.
 
 - `-S $(cat vars.env)` supplies each variable in the file.
-- `-i` ignores all the variables from the environment that called `env`, so only what's in the file counts.
-  > One of the items removed is PATH. If we hadn't removed that we could just run `envsubst` instead of `"$(which envsubst)"`.
+- `-i` ignores all the variables from the environment that called `env`, so only the file's variables are available.
+  > This also ignores `PATH`. That's why we use `"$(which envsubst)"` to locate `envsubst` up front.
 
 You could also use `env -i VARIABLE1="value1" VARIABLE2="value2" …` and not involve a file.
