@@ -2,7 +2,7 @@
 
 I need a little bit of templating sometimes, and I think I shouldn't have to choose and install a tool for that.
 
-`m4`, `env`, and `envsubst` are probably built in to your system. Together they make for lightweight templating with includes and variables.
+`m4`, `env`, and `envsubst` are probably built into your system. Together they make for lightweight templating with includes and variables.
 
 ## Usage
 
