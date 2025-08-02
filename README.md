@@ -54,3 +54,7 @@ Then you can pass that file as `env -iS "$(cat vars.env)" …` to run the comman
   > This also ignores `PATH`. That's why we use `"$(which envsubst)"` to locate `envsubst` up front.
 
 You could also use `env -i VARIABLE1="value1" VARIABLE2="value2" …` and not involve a file.
+
+## Q: Why isn't this a gist?
+
+A: The combination of wanting to supply example files, wanting to name the gist like I named this repo, and gists taking the name of their alphabetically first file confounded me.
