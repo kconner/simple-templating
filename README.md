@@ -9,7 +9,8 @@ I need a little bit of templating sometimes, and I think I shouldn't have to cho
 If you need both includes and variables:
 
 ```sh
-m4 template.m4 | env -iS "$(cat vars.env)" "$(which perl)" -pe 's/\$([A-Za-z_]\w*)/$ENV{$1}/g'
+m4 template.m4 | env -iS "$(cat vars.env)" \
+  "$(which perl)" -pe 's/\$([A-Za-z_]\w*)/$ENV{$1}/g'
 ```
 
 If you have `envsubst`, which is part of the common `gettext` brew package, you can use it with no arguments instead of `perl`.
@@ -27,7 +28,8 @@ m4 template.m4
 If you only need variables, start late:
 
 ```sh
-cat template | env -iS "$(cat vars.env)" "$(which perl)" -pe 's/\$([A-Za-z_]\w*)/$ENV{$1}/g'
+cat template | env -iS "$(cat vars.env)" \
+  "$(which perl)" -pe 's/\$([A-Za-z_]\w*)/$ENV{$1}/g'
 ```
 
 > I hereby acknowledge these useless uses of cat and elect to optimize for reader understanding.
