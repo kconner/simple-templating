@@ -1,45 +1,56 @@
 # Simple Templating
 
-m4 and envsubst are probably built in to your system. Together they make for lightweight templating with includes and variables.
+I need a little bit of templating sometimes, and I think I shouldn't have to choose and install a tool for that.
+
+`m4`, `env`, and `envsubst` are probably built in to your system. Together they make for lightweight templating with includes and variables.
 
 ## Usage
 
-If you only need includes:
+If you need both includes and variables:
 
+```sh
+m4 template.m4 | env -iS "$(cat vars.env)" "$(which envsubst)"
 ```
+
+If you only need includes, stop early:
+
+```sh
 m4 template.m4
 ```
 
-If you need variables:
+If you only need variables, start late:
 
-```
-cat template | ./with-env vars.env envsubst
+```sh
+cat template | env -iS "$(cat vars.env)" "$(which envsubst)"
 ```
 
-If you need both:
-
-```
-m4 template.m4 | ./with-env vars.env envsubst
-```
+> I hereby acknowledge these useless uses of cat and elect to optimize for reader understanding.
 
 ## How it works
 
-`m4` recursively expands any includes in the given template file. Includes look like:
+As a macro processor, `m4` will expand any includes in the given template file, recursively. Includes look like:
 
-```
-include(\`other.m4')
+```m4
+include(`other.m4')
 ```
 
-`envsubst` replaces shell variables, which look like:
+`envsubst` replaces shell variables in its input, which look like:
 
-```
+```sh
 $VARIABLE
 ```
 
-The values need to be set in the environment. To populate that, first make a file, whose lines look like:
+The values need to be set in `envsubst`'s environment. To populate that, first make a file, whose lines look like:
 
-```
-VARIABLE="value"
+```sh
+VARIABLE1="value1"
+VARIABLE2="value2"
 ```
 
-Then you can pass that file to this `with-env` script to run `envsubst` with the variables loaded in the environment.
+Then you can pass that file as `env -iS "$(cat vars.env)" …` to run the command that follows, `envsubst`, with the values available.
+
+- `-S $(cat vars.env)` supplies each variable in the file.
+- `-i` ignores all the variables from the environment that called `env`, so only what's in the file counts.
+  > One of the items removed is PATH. If we hadn't removed that we could just run `envsubst` instead of `"$(which envsubst)"`.
+
+You could also use `env -i VARIABLE1="value1" VARIABLE2="value2" …` and not involve a file.
